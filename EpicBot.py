@@ -38,7 +38,7 @@ def chat(content, channel=rpg_fight_thread):
         #print(json.loads(res.content))
         return res
     except Exception as e:
-        print("chat error : ",e)
+        cmdLog("chat error : "+str(e))
         
 def getMsg(channel=rpg_fight_thread, limit=3):
     #print("get msg from"+str(channel))
@@ -51,7 +51,7 @@ def getMsg(channel=rpg_fight_thread, limit=3):
             #print("aurthor : ", msg["author"]["username"], ", content : ", msg["content"])
         return msg_json
     except Exception as e:
-        print("get msg error : ",e)
+        cmdLog("get msg error : " + str(e))
 
 def command(cmd, channel=rpg_fight_thread, author="555955826880413696", limit=3):
     if checkNotInJail() == False:
@@ -79,13 +79,13 @@ def command(cmd, channel=rpg_fight_thread, author="555955826880413696", limit=3)
 def checkNotInJail(channel=rpg_fight_thread):
     msg = json.dumps(getMsg(channel))
     if "jail" in msg:
-        print("jail")
+        cmdLog("jail")
         return False
     if "rules" in msg:
-        print("rule")
+        cmdLog("rule")
         return False
     if "image " in msg:
-        print("image")
+        cmdLog("image")
         return False
     #print(msg)
     return True
@@ -102,7 +102,7 @@ def getRd():
         string = json.dumps(ready_options) 
         if "Experience" not in string:
             #got wrong response
-            print(string)
+            cmdLog(string)
             return 
         if "loot" in string:
             command("buy edgy lootbox")
@@ -122,13 +122,13 @@ def getRd():
         return
     except Exception as e:
         if "cooldown" in json.dumps(msg) or "previous" in json.dumps(msg):
-            print("cooldown")
+            cmdLog("cooldown")
             return
         #print("---something get in.---")
         if "TIP:" in json.dumps(msg):
-            print("tip")
+            cmdLog("tip")
         else:
-            print("---something get in.---", msg)
+            cmdLog("---something get in.---"+ json.dumps(msg))
         getRd()
 
 def duel():
@@ -140,7 +140,7 @@ def duel():
     lv = int(string[lvIndex+9:lvIndex+11])
 
     # get alts status
-    #20 33 50 56
+    #20 33 50 106
     players = ["<@1021213720254353440>", "<@1025701583008309281>", "<@1013138128652996689>", "<@1013359726567882753>"]
     playerName = ["SPD", "dod", "dio", "nina"]
 
@@ -149,7 +149,7 @@ def duel():
         duelTargetId = 0
     elif lv < 42:
         duelTargetId = 1
-    elif lv < 53:
+    elif lv < 78:
         duelTargetId = 2
     else:
         duelTargetId = 3
@@ -158,7 +158,7 @@ def duel():
     res = command("cd " + players[duelTargetId], channel=momo_bing)
     string = json.dumps(res)
     if "**`duel`** (" in string:
-        print(playerName[duelTargetId] + "cd ing")
+        cmdLog(playerName[duelTargetId] + "cd ing")
         return
 
     #print(playerName[duelTargetId] + " ready")
@@ -289,7 +289,7 @@ while True:
         if silentMode == "Off":
             getRd()
     except Exception as e:
-        print(e)        
+        cmdLog("error" + str(e))        
     # log status every 10 min
     if not nonce%10 and silentMode != "Off":
         command("profile")
