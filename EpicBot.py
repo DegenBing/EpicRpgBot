@@ -203,7 +203,7 @@ def telegram_bot_sendtext(bot_message):
     return response.json()
 
 def help_jail(msg=""):
-    telegram_bot_sendtext("坐牢了 995" + msg)
+    telegram_bot_sendtext("jail 995" + msg)
     time.sleep(5)
 
 ##########   bot setting ###########
