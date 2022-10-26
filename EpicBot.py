@@ -176,13 +176,13 @@ def duel():
 
 def hunt(target):
     command("heal")
-    command("area "+target)
+    command("area "+str(target))
     command("hunt")
     command("heal")
 
 def adv(target):
     command("heal")
-    command("area "+target)
+    command("area "+str(target))
     command("adventure")
     command("heal")
 
