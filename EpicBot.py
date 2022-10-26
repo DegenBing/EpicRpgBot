@@ -121,11 +121,14 @@ def getRd():
             command(target_work)
         return
     except Exception as e:
-        if "cooldown" in json.dumps(msg):
+        if "All your commands are on cooldown" in json.dumps(msg):
             cmdLog("cooldown " + json.dumps(msg))
             return        
         if "previous" in json.dumps(msg) :
             cmdLog("previous command " + json.dumps(msg))
+            return
+        if "spam" in json.dumps(msg) :
+            cmdLog("spam " + json.dumps(msg))
             return
         #print("---something get in.---")
         if "TIP:" in json.dumps(msg):
