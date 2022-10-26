@@ -245,6 +245,7 @@ def execCmd(cmds):
         cmdLog("work : " + str(target_work))
         cmdLog("sleepMode : " + sleepMode)
         cmdLog("silentMode : " + silentMode)
+        cmdLog("ver : 10270207" )
     elif cmd == "setHunt":
         try:
             new_target_hunt = int(cmds[1])
