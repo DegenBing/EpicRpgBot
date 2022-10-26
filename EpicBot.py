@@ -134,7 +134,8 @@ def getRd():
         if "TIP:" in json.dumps(msg):
             cmdLog("tip")
         else:
-            cmdLog("---something get in.---"+ json.dumps(msg))
+            cmdLog("unexpected error "+ str(e))
+            cmdLog("last msg"+json.dumps(msg))
         getRd()
 
 def duel():
@@ -248,7 +249,7 @@ def execCmd(cmds):
         cmdLog("work : " + str(target_work))
         cmdLog("sleepMode : " + sleepMode)
         cmdLog("silentMode : " + silentMode)
-        cmdLog("ver : 10270207" )
+        cmdLog("ver : 10270223" )
     elif cmd == "setHunt":
         try:
             new_target_hunt = int(cmds[1])
