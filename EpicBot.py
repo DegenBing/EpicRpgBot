@@ -140,14 +140,15 @@ def getRd():
 
 def duel():
     # get duel target status
-    res = command("cd " + players[duelTargetId], channel=momo_bing)
+    res = command("cd " + players[int(duelTargetId)], channel=momo_bing)
     string = json.dumps(res)
     if "**`duel`** (" in string:
-        cmdLog(playerName[duelTargetId] + "cd ing")
+        cmdLog(playerName[int(duelTargetId)] + " cd ing")
+        telegram_bot_sendtext(playerName[int(duelTargetId)] + " cd ing")
         return
 
     #print(playerName[duelTargetId] + " ready")
-    command("duel "+players[duelTargetId], channel="1026824974121566259")
+    command("duel "+players[int(duelTargetId)], channel="1026824974121566259")
     time.sleep(5)
     command("a", "1026824974121566259")
     time.sleep(10)
@@ -285,8 +286,8 @@ def execCmd(cmds):
 telegram_bot_sendtext("epic rpg start")
 nonce = 0
 
-target_hunt = "11"
-target_adv = "11"
+target_hunt = "13"
+target_adv = "13"
 #1-2 chop, 3-5 axe, 6-7 ladder, 8 bowsaw, 9-12 chainsaw / bigboat
 target_work = "bigboat"
 
@@ -297,7 +298,7 @@ advH = "Off"
 
 players = ["<@1021213720254353440>", "<@1025701583008309281>", "<@1013138128652996689>", "<@1013359726567882753>"]
 playerName = ["SPD", "dod", "dio", "nina"]
-duelTargetId = 0
+duelTargetId = 2
 
 chat("[bot]restart", self_cmd)
 
