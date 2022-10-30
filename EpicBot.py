@@ -139,28 +139,6 @@ def getRd():
         getRd()
 
 def duel():
-    #get cur level
-    res = command("profile", channel=momo_bing)
-    string = json.dumps(res)
-
-    lvIndex = string.find("Level")
-    lv = int(string[lvIndex+9:lvIndex+11])
-
-    # get alts status
-    #20 33 50 106
-    players = ["<@1021213720254353440>", "<@1025701583008309281>", "<@1013138128652996689>", "<@1013359726567882753>"]
-    playerName = ["SPD", "dod", "dio", "nina"]
-
-    duelTargetId = 0
-    if lv < 27:
-        duelTargetId = 0
-    elif lv < 42:
-        duelTargetId = 1
-    elif lv < 78:
-        duelTargetId = 2
-    else:
-        duelTargetId = 3
-
     # get duel target status
     res = command("cd " + players[duelTargetId], channel=momo_bing)
     string = json.dumps(res)
@@ -177,13 +155,19 @@ def duel():
 def hunt(target):
     command("heal")
     command("area "+str(target))
-    command("hunt")
+    if huntH != "Off":
+        command("hunt h")
+    else :
+        command("hunt")
     command("heal")
 
 def adv(target):
     command("heal")
     command("area "+str(target))
-    command("adventure")
+    if advH != "Off":
+        command("adventure h")
+    else :
+        command("adventure")
     command("heal")
 
 def farm():
@@ -231,25 +215,34 @@ def execCmd(cmds):
     global target_hunt
     global target_adv
     global target_work
+    global duelTargetId
     global sleepMode
     global silentMode
+    global huntH
+    global advH
 
     cmds = cmds.split(" ")
     cmd = cmds[0]
     if cmd == "help":
-        cmdLog("stat : get current stats")
-        cmdLog("setAdv : set adv area")
-        cmdLog("setHunt : setHuntArea")
-        cmdLog("setWork : setWorkCmd (1-2 chop, 3-5 axe, 6-7 ladder, 8 bowsaw, 9-12 chainsaw / bigboat)")
-        cmdLog("setSleep : On / Off, On -> only loot and duel")
-        cmdLog("setSilent : On / Off, On -> do nothing")
+        cmdLog("stat : get current stats\n\
+                setAdv : set adv area\n\
+                setHunt : setHuntArea\n\
+                setWork : setWorkCmd (1-2 chop, 3-5 axe, 6-7 ladder, 8 bowsaw, 9-12 chainsaw / bigboat)\n\
+                setDuel : setDuel (0 SPD, 1 dod, 2 dio, 3 nina )\n\
+                setSleep : On / Off, On -> only loot and duel\n\
+                setSilent : On / Off, On -> do nothing\n\
+                huntH : On / Off, On -> huntH, Off -> hunt\n\
+                advH : On / Off, On -> advH, Off -> adv")
     elif cmd == "stat":
-        cmdLog("hunt : " + str(target_hunt))
-        cmdLog("adv : " + str(target_adv))
-        cmdLog("work : " + str(target_work))
-        cmdLog("sleepMode : " + sleepMode)
-        cmdLog("silentMode : " + silentMode)
-        cmdLog("ver : 10270223" )
+        cmdLog("hunt : " + str(target_hunt)\
+            +"\nadv : " + str(target_adv)\
+            +"\nwork : " + str(target_work)\
+            +"\nduel : " + str(duelTargetId)\
+            +"\nsleepMode : " + sleepMode\
+            +"\nsilentMode : " + silentMode\
+            +"\nhuntH : " + huntH
+            +"\nadvH : " + advH)
+        cmdLog("ver : 10301301" )
     elif cmd == "setHunt":
         try:
             new_target_hunt = int(cmds[1])
@@ -268,13 +261,23 @@ def execCmd(cmds):
         cmdLog("setAdv to " + str(target_adv))
     elif cmd == "setWork":
         target_work = cmds[1]
-        cmdLog("setHunt to " + target_work)
+        cmdLog("setWork to " + target_work)
     elif cmd == "setSleep":
         sleepMode = cmds[1]
-        cmdLog("setHunt to " + sleepMode)
+        cmdLog("setSleep to " + sleepMode)
     elif cmd == "setSilent":
         silentMode = cmds[1]
         cmdLog("setSilent to " + silentMode)
+    elif cmd == "setHuntH":
+        huntH = cmds[1]
+        cmdLog("setHuntH to " + huntH)
+    elif cmd == "setAdvH":
+        advH = cmds[1]
+        cmdLog("setAdvH to " + advH)
+    elif cmd == "setDuel":
+        duelTargetId = cmds[1]
+        cmdLog("set duel to " + duelTargetId)
+    
     else:
         cmdLog("unknown cmd : " + cmd)
 
@@ -289,6 +292,12 @@ target_work = "bigboat"
 
 sleepMode = "Off"
 silentMode = "Off"
+huntH = "Off"
+advH = "Off"
+
+players = ["<@1021213720254353440>", "<@1025701583008309281>", "<@1013138128652996689>", "<@1013359726567882753>"]
+playerName = ["SPD", "dod", "dio", "nina"]
+duelTargetId = 0
 
 chat("[bot]restart", self_cmd)
 
