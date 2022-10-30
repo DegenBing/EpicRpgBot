@@ -98,8 +98,8 @@ def getRd():
     global sleepMode
     msg = command("rd")
     try:
-        ready_options = msg["embeds"][0]["fields"]
-        string = json.dumps(ready_options) 
+        #ready_options = msg["embeds"][0]["fields"]
+        string = json.dumps(msg) 
         if "Experience" not in string:
             #got wrong response
             cmdLog(string)
