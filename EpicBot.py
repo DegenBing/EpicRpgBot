@@ -64,6 +64,10 @@ def command(cmd, channel=rpg_fight_thread, author="555955826880413696", limit=3)
         return
     chat("<@555955826880413696> "+cmd, channel)
     time.sleep(1.5)
+    # in case get in jail at last command
+    if checkNotInJail() == False:
+        help_jail()
+        return
     msgs = getMsg(channel, limit)
     # for debug
     if author == "all":
