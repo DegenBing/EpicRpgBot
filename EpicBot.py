@@ -104,7 +104,7 @@ def getRd():
     try:
         #ready_options = msg["embeds"][0]["fields"]
         string = json.dumps(msg) 
-        if " \u2014 ready" not in string:
+        if "ready" not in string:
             #got wrong response
             cmdLog(string)
             return 
@@ -247,7 +247,7 @@ def execCmd(cmds):
             +"\nsilentMode : " + silentMode\
             +"\nhuntH : " + huntH
             +"\nadvH : " + advH)
-        cmdLog("ver : 10301301" )
+        cmdLog("ver : 11051600" )
     elif cmd == "setHunt":
         try:
             new_target_hunt = int(cmds[1])
