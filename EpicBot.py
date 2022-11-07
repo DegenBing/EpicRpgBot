@@ -8,8 +8,6 @@ import time
 ############ vars #################
 
 momo_bing = "1026824308783333437"
-# epic-freind = 1018472025343402034
-rpg_fight_thread = "1018472025343402034"
 self_cmd = "1034708685328498689"
 
 #epic helper = 812942851814064150
@@ -18,6 +16,7 @@ epic_helper = "812942851814064150"
 
 auth = sys.argv[1]
 tgToken = sys.argv[2]
+rpg_fight_thread = sys.argv[3]
 
 header = {
     "Authorization": auth,
@@ -54,15 +53,22 @@ def getMsg(channel=rpg_fight_thread, limit=3):
         cmdLog("get msg error : " + str(e))
 
 def command(cmd, channel=rpg_fight_thread, author="555955826880413696", limit=3):
+    global tagMode
     if checkNotInJail() == False:
         help_jail()
         return
     msg = json.dumps(getMsg(channel))
     if "horde" in msg:
-        chat("<@555955826880413696> join", channel)
+        if tagMode == "Off":
+            chat("join", channel)
+        else:
+            chat("<@555955826880413696> join", channel)
         telegram_bot_sendtext("horde!")
         return
-    chat("<@555955826880413696> "+cmd, channel)
+    if tagMode == "Off":
+        chat("rpg "+cmd, channel)
+    else:
+        chat("<@555955826880413696> "+cmd, channel)
     time.sleep(1.5)
     # in case get in jail at last command
     if checkNotInJail() == False:
@@ -223,6 +229,7 @@ def execCmd(cmds):
     global duelTargetId
     global sleepMode
     global silentMode
+    global tagMode
     global huntH
     global advH
 
@@ -245,9 +252,10 @@ def execCmd(cmds):
             +"\nduel : " + str(duelTargetId)\
             +"\nsleepMode : " + sleepMode\
             +"\nsilentMode : " + silentMode\
+            +"\ntagMode : " + tagMode\
             +"\nhuntH : " + huntH
             +"\nadvH : " + advH)
-        cmdLog("ver : 11051600" )
+        cmdLog("ver : 11071730" )
     elif cmd == "setHunt":
         try:
             new_target_hunt = int(cmds[1])
@@ -273,6 +281,9 @@ def execCmd(cmds):
     elif cmd == "setSilent":
         silentMode = cmds[1]
         cmdLog("setSilent to " + silentMode)
+    elif cmd == "setTag":
+        tagMode = cmds[1]
+        cmdLog("setTag to " + tagMode)
     elif cmd == "setHuntH":
         huntH = cmds[1]
         cmdLog("setHuntH to " + huntH)
@@ -297,6 +308,7 @@ target_work = "bigboat"
 
 sleepMode = "Off"
 silentMode = "Off"
+tagMode = "Off"
 huntH = "Off"
 advH = "Off"
 
