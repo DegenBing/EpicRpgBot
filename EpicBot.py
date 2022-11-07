@@ -51,13 +51,18 @@ def getMsg(channel=rpg_fight_thread, limit=3):
         return msg_json
     except Exception as e:
         cmdLog("get msg error : " + str(e))
+        return ""
 
 def command(cmd, channel=rpg_fight_thread, author="555955826880413696", limit=3):
     global tagMode
     if checkNotInJail() == False:
         help_jail()
         return
-    msg = json.dumps(getMsg(channel))
+    msgJson = getMsg(channel)
+    if msgJson == "":
+        cmdLog("get null msg error : horde")
+        return ""
+    msg = json.dumps(msgJson)
     if "horde" in msg:
         if tagMode == "Off":
             chat("join", channel)
@@ -74,7 +79,11 @@ def command(cmd, channel=rpg_fight_thread, author="555955826880413696", limit=3)
     if checkNotInJail() == False:
         help_jail()
         return
+
     msgs = getMsg(channel, limit)
+    if msgs == "":
+        cmdLog("get null msg error : cmd resp")
+        return ""
     # for debug
     if author == "all":
         return msgs
@@ -87,7 +96,11 @@ def command(cmd, channel=rpg_fight_thread, author="555955826880413696", limit=3)
     return ""
 
 def checkNotInJail(channel=rpg_fight_thread):
-    msg = json.dumps(getMsg(channel))
+    msgJson = getMsg(channel)
+    if msgJson == "":
+        cmdLog("get null msg error : check jail")
+        return True
+    msg = json.dumps(msgJson)
     if "jail" in msg:
         cmdLog("jail")
         return False
@@ -212,6 +225,8 @@ def help_jail(msg=""):
 
 def getSelfCmd():
     cmd = getMsg(self_cmd,1)[0]["content"]
+    if cmd == "":
+        return
     if cmd[0:5] == "[bot]":
         #print("no new")
         return
@@ -255,7 +270,7 @@ def execCmd(cmds):
             +"\ntagMode : " + tagMode\
             +"\nhuntH : " + huntH
             +"\nadvH : " + advH)
-        cmdLog("ver : 11071730" )
+        cmdLog("ver : 11080800" )
     elif cmd == "setHunt":
         try:
             new_target_hunt = int(cmds[1])
