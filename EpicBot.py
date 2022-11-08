@@ -162,6 +162,7 @@ def getRd():
         getRd()
 
 def duel():
+    global tagMode
     # get duel target status
     res = command("cd " + players[int(duelTargetId)], channel=momo_bing)
     string = json.dumps(res)
@@ -173,7 +174,10 @@ def duel():
     #print(playerName[duelTargetId] + " ready")
     command("duel "+players[int(duelTargetId)], channel="1026824974121566259")
     time.sleep(5)
-    command("a", "1026824974121566259")
+    if tagMode == "Off":
+        chat("a", "1026824974121566259")
+    else:
+        chat("<@555955826880413696> a", "1026824974121566259")
     time.sleep(10)
 
 def hunt(target):
@@ -270,7 +274,7 @@ def execCmd(cmds):
             +"\ntagMode : " + tagMode\
             +"\nhuntH : " + huntH
             +"\nadvH : " + advH)
-        cmdLog("ver : 11080800" )
+        cmdLog("ver : 11082200" )
     elif cmd == "setHunt":
         try:
             new_target_hunt = int(cmds[1])
