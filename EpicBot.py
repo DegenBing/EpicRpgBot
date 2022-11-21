@@ -205,12 +205,19 @@ def farm():
         if "carrot seed" in string:
             command("farm carrot")
             return
+        # only farm other if carrotMode Off
+        if "bread seed" in string and carrotMode == "Off":
+            command("farm bread")
+            return
+        if "potato seed" in string and carrotMode == "Off":
+            command("farm potato")
+            return
         command("farm")
         return
 
 def petAdv():
-    command("pets claim")
-    command("pets adventure a")
+    command("pets adv claim")
+    command("pets adv find a")
 
 #############  tg alert ###########
 
@@ -249,6 +256,7 @@ def execCmd(cmds):
     global sleepMode
     global silentMode
     global tagMode
+    global carrotMode
     global huntH
     global advH
 
@@ -262,6 +270,8 @@ def execCmd(cmds):
                 setDuel : setDuel (0 SPD, 1 dod, 2 dio, 3 nina )\n\
                 setSleep : On / Off, On -> only loot and duel\n\
                 setSilent : On / Off, On -> do nothing\n\
+                setTag : On / Off, On -> tag epic bot\n\
+                setCarrot : On / Off, On -> only carrot\n\
                 huntH : On / Off, On -> huntH, Off -> hunt\n\
                 advH : On / Off, On -> advH, Off -> adv")
     elif cmd == "stat":
@@ -272,9 +282,10 @@ def execCmd(cmds):
             +"\nsleepMode : " + sleepMode\
             +"\nsilentMode : " + silentMode\
             +"\ntagMode : " + tagMode\
+            +"\ncarrotMode : " + carrotMode\
             +"\nhuntH : " + huntH
             +"\nadvH : " + advH)
-        cmdLog("ver : 11082200" )
+        cmdLog("ver : 11220000" )
     elif cmd == "setHunt":
         try:
             new_target_hunt = int(cmds[1])
@@ -303,6 +314,9 @@ def execCmd(cmds):
     elif cmd == "setTag":
         tagMode = cmds[1]
         cmdLog("setTag to " + tagMode)
+    elif cmd == "setCarrot":
+        carrotMode = cmds[1]
+        cmdLog("setCarrot to " + carrotMode)
     elif cmd == "setHuntH":
         huntH = cmds[1]
         cmdLog("setHuntH to " + huntH)
@@ -323,11 +337,12 @@ nonce = 0
 target_hunt = "13"
 target_adv = "13"
 #1-2 chop, 3-5 axe, 6-7 ladder, 8 bowsaw, 9-12 chainsaw / bigboat
-target_work = "bigboat"
+target_work = "chainsaw"
 
 sleepMode = "Off"
 silentMode = "Off"
 tagMode = "Off"
+carrotMode = "Off"
 huntH = "Off"
 advH = "Off"
 
@@ -343,12 +358,11 @@ while True:
             getRd()
     except Exception as e:
         cmdLog("error" + str(e))        
-    # log status every 10 min
-    if not nonce%10 and silentMode != "Off":
+    # log status every 10 min and pet adv if silentMode off
+    if not nonce%10 and silentMode == "Off":
         command("profile")
         command("inventory")
-        command("pets adventure claim")
-        command("pets adventure find a")
+        petAdv()
     nonce+=1
     # split it so no need to wait when stop
     for i in range(1,60):
