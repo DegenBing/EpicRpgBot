@@ -182,7 +182,8 @@ def duel():
 
 def hunt(target):
     command("heal")
-    command("area "+str(target))
+    if dynArea != "Off":
+        command("area "+str(target))
     if huntH != "Off":
         command("hunt h")
     else :
@@ -191,7 +192,8 @@ def hunt(target):
 
 def adv(target):
     command("heal")
-    command("area "+str(target))
+    if dynArea != "Off":
+        command("area "+str(target))
     if advH != "Off":
         command("adventure h")
     else :
@@ -257,6 +259,7 @@ def execCmd(cmds):
     global silentMode
     global tagMode
     global carrotMode
+    global dynArea
     global huntH
     global advH
 
@@ -272,6 +275,7 @@ def execCmd(cmds):
                 setSilent : On / Off, On -> do nothing\n\
                 setTag : On / Off, On -> tag epic bot\n\
                 setCarrot : On / Off, On -> only carrot\n\
+                setDynArea : On / Off, On -> check area before hunt/adv\n\
                 huntH : On / Off, On -> huntH, Off -> hunt\n\
                 advH : On / Off, On -> advH, Off -> adv")
     elif cmd == "stat":
@@ -283,9 +287,10 @@ def execCmd(cmds):
             +"\nsilentMode : " + silentMode\
             +"\ntagMode : " + tagMode\
             +"\ncarrotMode : " + carrotMode\
+            +"\ndynArea : " + dynArea\
             +"\nhuntH : " + huntH
             +"\nadvH : " + advH)
-        cmdLog("ver : 11220000" )
+        cmdLog("ver : 12031600" )
     elif cmd == "setHunt":
         try:
             new_target_hunt = int(cmds[1])
@@ -317,6 +322,9 @@ def execCmd(cmds):
     elif cmd == "setCarrot":
         carrotMode = cmds[1]
         cmdLog("setCarrot to " + carrotMode)
+    elif cmd == "setDynArea":
+        dynArea = cmds[1]
+        cmdLog("setDynArea to " + dynArea)
     elif cmd == "setHuntH":
         huntH = cmds[1]
         cmdLog("setHuntH to " + huntH)
@@ -339,10 +347,11 @@ target_adv = "13"
 #1-2 chop, 3-5 axe, 6-7 ladder, 8 bowsaw, 9-12 chainsaw / bigboat
 target_work = "chainsaw"
 
-sleepMode = "Off"
+sleepMode = "On"    # default sleep, in case crash/restart when sleeping
 silentMode = "Off"
 tagMode = "Off"
 carrotMode = "Off"
+dynArea = "Off"     # default not change area
 huntH = "Off"
 advH = "Off"
 
@@ -363,6 +372,7 @@ while True:
         command("profile")
         command("inventory")
         petAdv()
+        command("xmas chimney") # event
     nonce+=1
     # split it so no need to wait when stop
     for i in range(1,60):
