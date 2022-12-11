@@ -351,7 +351,7 @@ nonce = 0
 target_hunt = "13"
 target_adv = "13"
 #1-2 chop, 3-5 axe, 6-7 ladder, 8 bowsaw, 9-12 chainsaw / bigboat
-target_work = "chainsaw"
+target_work = "dynamite"
 
 sleepMode = "On"    # default sleep, in case crash/restart when sleeping
 silentMode = "Off"
@@ -359,8 +359,8 @@ tagMode = "Off"
 carrotMode = "Off"
 hordeMode = "Off"
 dynArea = "Off"     # default not change area
-huntH = "Off"
-advH = "Off"
+huntH = "On"
+advH = "On"
 
 players = ["<@1021213720254353440>", "<@1025701583008309281>", "<@955368738180440076>", "<@1013138128652996689>", "<@1013359726567882753>"]
 playerName = ["SPD", "dod", "raphel", "dio", "nina"]
