@@ -63,7 +63,7 @@ def command(cmd, channel=rpg_fight_thread, author="555955826880413696", limit=3)
         cmdLog("get null msg error : horde")
         return ""
     msg = json.dumps(msgJson)
-    if "horde" in msg:
+    if "horde" in msg and hordeMode != "Off":
         if tagMode == "Off":
             chat("join", channel)
         else:
@@ -259,6 +259,7 @@ def execCmd(cmds):
     global silentMode
     global tagMode
     global carrotMode
+    global hordeMode
     global dynArea
     global huntH
     global advH
@@ -276,6 +277,7 @@ def execCmd(cmds):
                 setTag : On / Off, On -> tag epic bot\n\
                 setCarrot : On / Off, On -> only carrot\n\
                 setDynArea : On / Off, On -> check area before hunt/adv\n\
+                setHorde : On / Off, On -> join horde\n\
                 huntH : On / Off, On -> huntH, Off -> hunt\n\
                 advH : On / Off, On -> advH, Off -> adv")
     elif cmd == "stat":
@@ -287,10 +289,11 @@ def execCmd(cmds):
             +"\nsilentMode : " + silentMode\
             +"\ntagMode : " + tagMode\
             +"\ncarrotMode : " + carrotMode\
+            +"\nhordeMode : " + hordeMode\
             +"\ndynArea : " + dynArea\
             +"\nhuntH : " + huntH
             +"\nadvH : " + advH)
-        cmdLog("ver : 12031600" )
+        cmdLog("ver : 12111200" )
     elif cmd == "setHunt":
         try:
             new_target_hunt = int(cmds[1])
@@ -322,6 +325,9 @@ def execCmd(cmds):
     elif cmd == "setCarrot":
         carrotMode = cmds[1]
         cmdLog("setCarrot to " + carrotMode)
+    elif cmd == "setHorde":
+        hordeMode = cmds[1]
+        cmdLog("setHorde to " + hordeMode)
     elif cmd == "setDynArea":
         dynArea = cmds[1]
         cmdLog("setDynArea to " + dynArea)
@@ -351,12 +357,13 @@ sleepMode = "On"    # default sleep, in case crash/restart when sleeping
 silentMode = "Off"
 tagMode = "Off"
 carrotMode = "Off"
+hordeMode = "Off"
 dynArea = "Off"     # default not change area
 huntH = "Off"
 advH = "Off"
 
-players = ["<@1021213720254353440>", "<@1025701583008309281>", "<@1013138128652996689>", "<@1013359726567882753>"]
-playerName = ["SPD", "dod", "dio", "nina"]
+players = ["<@1021213720254353440>", "<@1025701583008309281>", "<@955368738180440076>", "<@1013138128652996689>", "<@1013359726567882753>"]
+playerName = ["SPD", "dod", "raphel", "dio", "nina"]
 duelTargetId = 2
 
 chat("[bot]restart", self_cmd)
