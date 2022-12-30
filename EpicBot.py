@@ -219,7 +219,8 @@ def farm():
 
 def petAdv():
     command("pets adv claim")
-    command("pets adv find a")
+    for cmd in petCmds:
+        command(cmd)
 
 #############  tg alert ###########
 
@@ -263,6 +264,7 @@ def execCmd(cmds):
     global dynArea
     global huntH
     global advH
+    global petCmds
 
     cmds = cmds.split(" ")
     cmd = cmds[0]
@@ -279,7 +281,10 @@ def execCmd(cmds):
                 setDynArea : On / Off, On -> check area before hunt/adv\n\
                 setHorde : On / Off, On -> join horde\n\
                 huntH : On / Off, On -> huntH, Off -> hunt\n\
-                advH : On / Off, On -> advH, Off -> adv")
+                advH : On / Off, On -> advH, Off -> adv\n\
+                resetPet : reset pet cmd\n\
+                addPet : addPet Cmd (ex : find a)\n\
+                forcePet : force call petAdv()")
     elif cmd == "stat":
         cmdLog("hunt : " + str(target_hunt)\
             +"\nadv : " + str(target_adv)\
@@ -292,8 +297,9 @@ def execCmd(cmds):
             +"\nhordeMode : " + hordeMode\
             +"\ndynArea : " + dynArea\
             +"\nhuntH : " + huntH
-            +"\nadvH : " + advH)
-        cmdLog("ver : 12111200" )
+            +"\nadvH : " + advH
+            +"\npetCmd : "+ str(petCmds))
+        cmdLog("ver : 12301200" )
     elif cmd == "setHunt":
         try:
             new_target_hunt = int(cmds[1])
@@ -340,7 +346,16 @@ def execCmd(cmds):
     elif cmd == "setDuel":
         duelTargetId = cmds[1]
         cmdLog("set duel to " + duelTargetId)
-    
+    elif cmd == "resetPet":
+        petCmds = ["pet adv find e"]
+        cmdLog("reset pet cmd to " + str(petCmds))
+    elif cmd == "addPet":
+        cmdstr = "pet adv " + cmds[1] + " " + cmds[2]
+        petCmds.append(cmdstr)
+        cmdLog("add pet : " + str(cmdstr))
+        cmdLog("cur pet cmd :" + str(petCmds))
+    elif cmd == "forcePet":
+        petAdv()
     else:
         cmdLog("unknown cmd : " + cmd)
 
@@ -361,6 +376,9 @@ hordeMode = "Off"
 dynArea = "Off"     # default not change area
 huntH = "On"
 advH = "On"
+petCmds = ["pet adv find e"]
+
+    #command("pets adv find a")
 
 players = ["<@1021213720254353440>", "<@1025701583008309281>", "<@955368738180440076>", "<@1013138128652996689>", "<@1013359726567882753>"]
 playerName = ["SPD", "dod", "raphel", "dio", "nina"]
@@ -379,7 +397,6 @@ while True:
         command("profile")
         command("inventory")
         petAdv()
-        command("xmas chimney") # event
     nonce+=1
     # split it so no need to wait when stop
     for i in range(1,60):
