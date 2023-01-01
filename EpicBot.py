@@ -282,7 +282,7 @@ def execCmd(cmds):
                 setHorde : On / Off, On -> join horde\n\
                 huntH : On / Off, On -> huntH, Off -> hunt\n\
                 advH : On / Off, On -> advH, Off -> adv\n\
-                resetPet : reset pet cmd\n\
+                resetPet : reset pet find target\n\
                 addPet : addPet Cmd (ex : find a)\n\
                 forcePet : force call petAdv()")
     elif cmd == "stat":
@@ -299,7 +299,7 @@ def execCmd(cmds):
             +"\nhuntH : " + huntH
             +"\nadvH : " + advH
             +"\npetCmd : "+ str(petCmds))
-        cmdLog("ver : 12301200" )
+        cmdLog("ver : 01011400" )
     elif cmd == "setHunt":
         try:
             new_target_hunt = int(cmds[1])
@@ -347,7 +347,7 @@ def execCmd(cmds):
         duelTargetId = cmds[1]
         cmdLog("set duel to " + duelTargetId)
     elif cmd == "resetPet":
-        petCmds = ["pet adv find e"]
+        petCmds = ["pet adv find "+cmds[1]]
         cmdLog("reset pet cmd to " + str(petCmds))
     elif cmd == "addPet":
         cmdstr = "pet adv " + cmds[1] + " " + cmds[2]
