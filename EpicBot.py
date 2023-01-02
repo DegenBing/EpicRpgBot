@@ -272,7 +272,7 @@ def getTrainAns(message):
         return str(fish[tmp.group(1)])
 
     if "mine!" in message :
-        return "Y"
+        return "N"
     
     if "casino?" in message :
         #erase space to handle four leaf
@@ -445,7 +445,7 @@ def execCmd(cmds):
 telegram_bot_sendtext("epic rpg start")
 nonce = 0
 
-versionNum = "01021200"
+versionNum = "01021300"
 
 target_hunt = "13"
 target_adv = "13"
