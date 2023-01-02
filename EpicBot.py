@@ -73,16 +73,6 @@ def command(cmd, channel=rpg_fight_thread, author="555955826880413696", limit=3)
             chat("<@555955826880413696> join", channel)
         telegram_bot_sendtext("horde!")
         return
-    #handle pet
-    if "Hunger" in msg:
-        telegram_bot_sendtext(msg)
-        telegram_bot_sendtext("pet!")
-        time.sleep(2)
-        telegram_bot_sendtext("pet!")
-        time.sleep(2)
-        telegram_bot_sendtext("pet!")
-        time.sleep(2)
-        return
     
     if tagMode == "Off":
         chat("rpg "+cmd, channel)
@@ -98,6 +88,17 @@ def command(cmd, channel=rpg_fight_thread, author="555955826880413696", limit=3)
     if msgs == "":
         cmdLog("get null msg error : cmd resp")
         return ""
+    msg = json.dumps(msgJson)
+    #handle pet
+    if "Hunger" in msg:
+        telegram_bot_sendtext(msg)
+        telegram_bot_sendtext("pet!")
+        time.sleep(2)
+        telegram_bot_sendtext("pet!")
+        time.sleep(2)
+        telegram_bot_sendtext("pet!")
+        time.sleep(2)
+        return
     # for debug
     if author == "all":
         return msgs
@@ -445,7 +446,7 @@ def execCmd(cmds):
 telegram_bot_sendtext("epic rpg start")
 nonce = 0
 
-versionNum = "01021300"
+versionNum = "01022100"
 
 target_hunt = "13"
 target_adv = "13"
