@@ -4,6 +4,7 @@ import requests
 import json
 import random
 import time
+import re
 
 ############ vars #################
 
@@ -58,11 +59,13 @@ def command(cmd, channel=rpg_fight_thread, author="555955826880413696", limit=3)
     if checkNotInJail() == False:
         help_jail()
         return
+
     msgJson = getMsg(channel)
     if msgJson == "":
         cmdLog("get null msg error : horde")
         return ""
     msg = json.dumps(msgJson)
+    #handle horde
     if "horde" in msg and hordeMode != "Off":
         if tagMode == "Off":
             chat("join", channel)
@@ -70,6 +73,17 @@ def command(cmd, channel=rpg_fight_thread, author="555955826880413696", limit=3)
             chat("<@555955826880413696> join", channel)
         telegram_bot_sendtext("horde!")
         return
+    #handle pet
+    if "Hunger" in msg:
+        telegram_bot_sendtext(msg)
+        telegram_bot_sendtext("pet!")
+        time.sleep(2)
+        telegram_bot_sendtext("pet!")
+        time.sleep(2)
+        telegram_bot_sendtext("pet!")
+        time.sleep(2)
+        return
+    
     if tagMode == "Off":
         chat("rpg "+cmd, channel)
     else:
@@ -142,6 +156,8 @@ def getRd():
             farm()
         if "chop" in string:
             command(target_work)
+        if "training" in string:
+            train()
         return
     except Exception as e:
         if "All your commands are on cooldown" in json.dumps(msg):
@@ -222,6 +238,68 @@ def petAdv():
     for cmd in petCmds:
         command(cmd)
 
+def train():
+    command("trade e all")
+    msg = command("tr")
+    if msg != "":
+        string = json.dumps(msg)
+        ans = getTrainAns(string)
+        chat(ans)
+        cmdLog("training str:"+string)
+        cmdLog("ans:",ans)
+        return
+
+def getTrainAns(message):
+    if "field!" in message:
+        tmp = re.search('(\w+).. letter of <:(\w+):', message)
+        num = { 
+            'first'  : 0,
+            'second' : 1,
+            'third'  : 2,
+            'fourth' : 3,
+            'fifth'  : 4,
+            'sixth'  : 5
+        }
+        return str(tmp.group(2).upper()[num[tmp.group(1)]])
+
+    if "river!" in message :
+        tmp = re.search('<:(\w+):', message)
+        fish = {
+            'normiefish' : 1,
+            'goldenfish' : 2,
+            'EPICfish'   : 3
+        }
+        return str(fish[tmp.group(1)])
+
+    if "mine!" in message :
+        return "Y"
+    
+    if "casino?" in message :
+        tmp = re.search('a ..(\w+).. \? .(\w+).\\n', message )
+
+        if tmp == None :
+            return "N"
+
+        pair = {
+            'diamond' : 'gem',
+            'dice'    : 'gamedie'
+        }
+
+        ask = "".join(tmp.group(1).split(" ")).lower()
+        if ask in pair :
+            ask = pair[ask]
+        
+        if ask == tmp.group(2):
+            return "Y"
+        return "N"
+
+    if "forest!" in message :
+        key = re.search('many <:(\w+):', message).group(1)
+        tmp = re.findall( '<:'+key+':', message)
+        return str( len(tmp) - 1 )
+
+    return None
+
 #############  tg alert ###########
 
 def telegram_bot_sendtext(bot_message):
@@ -299,7 +377,7 @@ def execCmd(cmds):
             +"\nhuntH : " + huntH
             +"\nadvH : " + advH
             +"\npetCmd : "+ str(petCmds))
-        cmdLog("ver : 01011400" )
+        cmdLog("ver : 01021130" )
     elif cmd == "setHunt":
         try:
             new_target_hunt = int(cmds[1])
@@ -376,9 +454,7 @@ hordeMode = "Off"
 dynArea = "Off"     # default not change area
 huntH = "On"
 advH = "On"
-petCmds = ["pet adv find e"]
-
-    #command("pets adv find a")
+petCmds = ["pet adv find a"]
 
 players = ["<@1021213720254353440>", "<@1025701583008309281>", "<@955368738180440076>", "<@1013138128652996689>", "<@1013359726567882753>"]
 playerName = ["SPD", "dod", "raphel", "dio", "nina"]
