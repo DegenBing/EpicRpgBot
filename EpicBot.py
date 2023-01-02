@@ -246,7 +246,7 @@ def train():
         ans = getTrainAns(string)
         chat(ans)
         cmdLog("training str:"+string)
-        cmdLog("ans:",ans)
+        cmdLog("ans:"+ans)
         return
 
 def getTrainAns(message):
@@ -275,14 +275,18 @@ def getTrainAns(message):
         return "Y"
     
     if "casino?" in message :
-        tmp = re.search('a ..(\w+).. \? .(\w+).\\n', message )
-
+        #erase space to handle four leaf
+        nMsg = message.replace(" ","")
+        tmp = re.search('a..(\w+)..\?.(\w+).\\n', nMsg )
         if tmp == None :
             return "N"
 
         pair = {
             'diamond' : 'gem',
-            'dice'    : 'gamedie'
+            'dice'    : 'game_die',
+            'gift'    : 'gift',
+            'fourleafclover'    : "four_leaf_clover",
+            "coin"    : 'coin'
         }
 
         ask = "".join(tmp.group(1).split(" ")).lower()
@@ -377,7 +381,7 @@ def execCmd(cmds):
             +"\nhuntH : " + huntH
             +"\nadvH : " + advH
             +"\npetCmd : "+ str(petCmds))
-        cmdLog("ver : 01021130" )
+        cmdLog("ver : "+str(versionNum))
     elif cmd == "setHunt":
         try:
             new_target_hunt = int(cmds[1])
@@ -440,6 +444,8 @@ def execCmd(cmds):
 ############ main  ################
 telegram_bot_sendtext("epic rpg start")
 nonce = 0
+
+versionNum = "01021200"
 
 target_hunt = "13"
 target_adv = "13"
