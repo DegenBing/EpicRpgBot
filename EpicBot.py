@@ -54,17 +54,21 @@ def getMsg(channel=rpg_fight_thread, limit=3):
         cmdLog("get msg error : " + str(e))
         return ""
 
-def command(cmd, channel=rpg_fight_thread, author="555955826880413696", limit=3):
+def getAuthorMsg(channel=rpg_fight_thread, limit=5, author='555955826880413696'):
+    msgs = getMsg(channel, limit)
+    # return newest response from selected id
+    for msg in msgs:
+        if msg["author"]["id"] == author:
+            return msg
+    return ""
+
+def command(cmd, channel=rpg_fight_thread):
     global tagMode
     if checkNotInJail() == False:
         help_jail()
         return
 
-    msgJson = getMsg(channel)
-    if msgJson == "":
-        cmdLog("get null msg error : horde")
-        return ""
-    msg = json.dumps(msgJson)
+    msg = getAuthorMsg()
     #handle horde
     if "horde" in msg and hordeMode != "Off":
         if tagMode == "Off":
@@ -84,20 +88,7 @@ def command(cmd, channel=rpg_fight_thread, author="555955826880413696", limit=3)
         help_jail()
         return
 
-    msgs = getMsg(channel, limit)
-    if msgs == "":
-        cmdLog("get null msg error : cmd resp")
-        return ""
-    # for debug
-    if author == "all":
-        return msgs
-    # return newest response from selected id
-    for msg in msgs:
-        if msg["author"]["id"] == author:
-            #print("msg0", msg[0])
-            return msg
-    
-    return ""
+    return getAuthorMsg()
 
 def checkNotInJail(channel=rpg_fight_thread):
     msgJson = getMsg(channel)
@@ -238,7 +229,7 @@ def train():
     chat(ans)
     time.sleep(1.5)
     #check pet
-    msg = json.dumps(getMsg())
+    msg = json.dumps(getAuthorMsg())
     if "APPROACHING" in msg:
         telegram_bot_sendtext("pet!")
         cmdLog("pet msg : "+msg)
@@ -458,7 +449,7 @@ def execCmd(cmds):
 telegram_bot_sendtext("epic rpg start")
 nonce = 0
 
-versionNum = "01032000"
+versionNum = "01032300"
 
 target_hunt = "13"
 target_adv = "13"
