@@ -278,7 +278,8 @@ def getTrainAns(message):
     if "casino?" in message :
         #erase space to handle four leaf
         nMsg = message.replace(" ","")
-        tmp = re.search('a..(\w+)..\?.(\w+).\\n', nMsg )
+        nMsg = nMsg.replace("*","")
+        tmp = re.search('thisa(\w+)\?.(\w+).\\n', nMsg )
         if tmp == None :
             return "N"
 
@@ -446,7 +447,7 @@ def execCmd(cmds):
 telegram_bot_sendtext("epic rpg start")
 nonce = 0
 
-versionNum = "01022100"
+versionNum = "01031900"
 
 target_hunt = "13"
 target_adv = "13"
