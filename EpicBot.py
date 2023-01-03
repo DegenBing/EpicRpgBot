@@ -88,17 +88,6 @@ def command(cmd, channel=rpg_fight_thread, author="555955826880413696", limit=3)
     if msgs == "":
         cmdLog("get null msg error : cmd resp")
         return ""
-    msg = json.dumps(msgJson)
-    #handle pet
-    if "Hunger" in msg:
-        telegram_bot_sendtext(msg)
-        telegram_bot_sendtext("pet!")
-        time.sleep(2)
-        telegram_bot_sendtext("pet!")
-        time.sleep(2)
-        telegram_bot_sendtext("pet!")
-        time.sleep(2)
-        return
     # for debug
     if author == "all":
         return msgs
@@ -242,13 +231,35 @@ def petAdv():
 def train():
     command("trade e all")
     msg = command("tr")
-    if msg != "":
-        string = json.dumps(msg)
-        ans = getTrainAns(string)
+    string = json.dumps(msg)
+    ans = getTrainAns(string)
+    cmdLog("training str:"+string)
+    cmdLog("ans:"+ans)
+    chat(ans)
+    time.sleep(1.5)
+    #check pet
+    msg = json.dumps(getMsg())
+    if "APPROACHING" in msg:
+        telegram_bot_sendtext("pet!")
+        cmdLog("pet msg : "+msg)
+        ans = catch_pet(msg)
+        cmdLog("pet ans : "+ans)
         chat(ans)
-        cmdLog("training str:"+string)
-        cmdLog("ans:"+ans)
-        return
+
+def catch_pet(msg) :
+    ans = ''
+    hunger = int(re.search('Hunger: (\d+)', msg).group(1))
+    n1 = int( ( hunger + 10 ) / 20 ) 
+    ans = 'feed ' * n1
+
+    happy = int( re.search('Happiness: (\d+)', msg).group(1) )
+    n2 = int( ( 100 - happy ) / 10 )
+
+    n2 = n2 if (n1 + n2) <= 6 else 6 - n1
+    ans += 'pat ' * n2
+
+    return ans
+
 
 def getTrainAns(message):
     if "field!" in message:
@@ -447,7 +458,7 @@ def execCmd(cmds):
 telegram_bot_sendtext("epic rpg start")
 nonce = 0
 
-versionNum = "01031900"
+versionNum = "01032000"
 
 target_hunt = "13"
 target_adv = "13"
