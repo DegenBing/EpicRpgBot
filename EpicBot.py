@@ -450,7 +450,7 @@ def execCmd(cmds):
 telegram_bot_sendtext("epic rpg start")
 nonce = 0
 
-versionNum = "01050030"
+versionNum = "01050100"
 
 target_hunt = "13"
 target_adv = "13"
@@ -465,7 +465,7 @@ hordeMode = "Off"
 dynArea = "Off"     # default not change area
 huntH = "On"
 advH = "On"
-petCmds = ["pet adv find a"]
+petCmds = ["pet adv find h"]
 
 players = ["<@1021213720254353440>", "<@1025701583008309281>", "<@955368738180440076>", "<@1013138128652996689>", "<@1013359726567882753>"]
 playerName = ["SPD", "dod", "raphel", "dio", "nina"]
@@ -474,13 +474,15 @@ duelTargetId = 2
 chat("[bot]restart", self_cmd)
 
 while True:
+    # if silent mode or sleep mode on, don't rd every min.
     try:
-        if silentMode == "Off":
+        if silentMode == "Off" and sleepMode == "Off":
             getRd()
     except Exception as e:
         cmdLog("error" + str(e))        
     # log status every 10 min and pet adv if silentMode off
     if not nonce%10 and silentMode == "Off":
+        getRd()
         command("profile")
         command("inventory")
         petAdv()
