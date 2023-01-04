@@ -124,6 +124,8 @@ def getRd():
             return 
         if "loot" in string:
             command("buy edgy lootbox")
+        if "training" in string:
+            train()
         if "duel" in string:
             duel()
         if sleepMode != "Off":
@@ -137,8 +139,6 @@ def getRd():
             farm()
         if "chop" in string:
             command(target_work)
-        if "training" in string:
-            train()
         return
     except Exception as e:
         if "All your commands are on cooldown" in json.dumps(msg):
@@ -251,7 +251,6 @@ def catch_pet(msg) :
     ans += 'pat ' * n2
 
     return ans
-
 
 def getTrainAns(message):
     if "field!" in message:
@@ -443,6 +442,7 @@ def execCmd(cmds):
         cmdLog("cur pet cmd :" + str(petCmds))
     elif cmd == "forcePet":
         petAdv()
+        cmdLog("force pet")
     else:
         cmdLog("unknown cmd : " + cmd)
 
@@ -450,7 +450,7 @@ def execCmd(cmds):
 telegram_bot_sendtext("epic rpg start")
 nonce = 0
 
-versionNum = "01041030"
+versionNum = "01050030"
 
 target_hunt = "13"
 target_adv = "13"
