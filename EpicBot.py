@@ -228,6 +228,9 @@ def train():
     cmdLog("ans:"+ans)
     chat(ans)
     time.sleep(1.5)
+    #send 2 time in case miss it
+    chat(ans)
+    time.sleep(1.5)
     #check pet
     msg = json.dumps(getAuthorMsg()).replace("*","")
     if "APPROACHING" in msg:
@@ -236,6 +239,9 @@ def train():
         time.sleep(0.5)
         ans = catch_pet(msg)
         cmdLog("pet ans : "+ans)
+        chat(ans)    
+        #send 2 time in case miss it
+        time.sleep(1.5)
         chat(ans)
 
 def catch_pet(msg) :
@@ -450,7 +456,7 @@ def execCmd(cmds):
 telegram_bot_sendtext("epic rpg start")
 nonce = 0
 
-versionNum = "01050100"
+versionNum = "01051300"
 
 target_hunt = "13"
 target_adv = "13"
