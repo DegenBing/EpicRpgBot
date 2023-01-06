@@ -215,7 +215,7 @@ def farm():
         return
 
 def petAdv():
-    command("pets adv claim")
+    command("pets claim")
     for cmd in petCmds:
         command(cmd)
 
@@ -456,7 +456,7 @@ def execCmd(cmds):
 telegram_bot_sendtext("epic rpg start")
 nonce = 0
 
-versionNum = "01051300"
+versionNum = "01061100"
 
 target_hunt = "13"
 target_adv = "13"
