@@ -220,6 +220,8 @@ def petAdv():
         command(cmd)
 
 def train():
+    if trainMode != "On":
+        return
     command("trade e all")
     msg = command("tr")
     string = json.dumps(msg)
@@ -300,6 +302,7 @@ def getTrainAns(message):
         }
 
         ask = "".join(tmp.group(1).split(" ")).lower()
+        cmdLog("tr : "+ask+" + "+tmp.group(2))
         if ask in pair :
             ask = pair[ask]
         
@@ -351,6 +354,7 @@ def execCmd(cmds):
     global sleepMode
     global silentMode
     global tagMode
+    global trainMode
     global carrotMode
     global hordeMode
     global dynArea
@@ -370,6 +374,7 @@ def execCmd(cmds):
                 setSilent : On / Off, On -> do nothing\n\
                 setTag : On / Off, On -> tag epic bot\n\
                 setCarrot : On / Off, On -> only carrot\n\
+                setTrain : On / Off, On -> auto train + catch pet\n\
                 setDynArea : On / Off, On -> check area before hunt/adv\n\
                 setHorde : On / Off, On -> join horde\n\
                 huntH : On / Off, On -> huntH, Off -> hunt\n\
@@ -385,6 +390,7 @@ def execCmd(cmds):
             +"\nsleepMode : " + sleepMode\
             +"\nsilentMode : " + silentMode\
             +"\ntagMode : " + tagMode\
+            +"\ntrainMode : " + trainMode\
             +"\ncarrotMode : " + carrotMode\
             +"\nhordeMode : " + hordeMode\
             +"\ndynArea : " + dynArea\
@@ -420,6 +426,9 @@ def execCmd(cmds):
     elif cmd == "setTag":
         tagMode = cmds[1]
         cmdLog("setTag to " + tagMode)
+    elif cmd == "setTrain":
+        trainMode = cmds[1]
+        cmdLog("setTrain to " + trainMode)
     elif cmd == "setCarrot":
         carrotMode = cmds[1]
         cmdLog("setCarrot to " + carrotMode)
@@ -447,8 +456,8 @@ def execCmd(cmds):
         cmdLog("add pet : " + str(cmdstr))
         cmdLog("cur pet cmd :" + str(petCmds))
     elif cmd == "forcePet":
-        petAdv()
         cmdLog("force pet")
+        petAdv()
     else:
         cmdLog("unknown cmd : " + cmd)
 
@@ -456,7 +465,7 @@ def execCmd(cmds):
 telegram_bot_sendtext("epic rpg start")
 nonce = 0
 
-versionNum = "01061100"
+versionNum = "01071100"
 
 target_hunt = "13"
 target_adv = "13"
@@ -466,12 +475,13 @@ target_work = "dynamite"
 sleepMode = "On"    # default sleep, in case crash/restart when sleeping
 silentMode = "Off"
 tagMode = "Off"
+trainMode = "On"
 carrotMode = "Off"
 hordeMode = "Off"
 dynArea = "Off"     # default not change area
 huntH = "On"
 advH = "On"
-petCmds = ["pet adv find h"]
+petCmds = ["pet adv find g"]
 
 players = ["<@1021213720254353440>", "<@1025701583008309281>", "<@955368738180440076>", "<@1013138128652996689>", "<@1013359726567882753>"]
 playerName = ["SPD", "dod", "raphel", "dio", "nina"]
